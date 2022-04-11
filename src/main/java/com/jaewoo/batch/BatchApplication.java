@@ -26,9 +26,9 @@ public class BatchApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        deptRepository.deleteAll();
-
-        IntStream.range(1, 100)
-                .forEach((index) -> deptRepository.save(new Dept(index, "dept name - " + index, "dept loc - " + index)));
+//        deptRepository.deleteAll();
+//
+//        IntStream.range(1, 100)
+//                .forEach((index) -> deptRepository.save(new Dept(index, "dept name - " + index, "dept loc - " + index)));
     }
 }
