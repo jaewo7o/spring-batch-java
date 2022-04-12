@@ -40,7 +40,7 @@ public class CsvJob2 {
     @Bean
     public Step csvJob2_step01() {
         return stepBuilderFactory.get("csvJob2_step01")
-                .chunk(CHUNK_SIZE)
+                .<TwoToken, TwoToken>chunk(CHUNK_SIZE)
                 .reader(csvJob2_fileReader())
                 .writer(csvJob2_fileWriter())
                 .build();
@@ -70,7 +70,7 @@ public class CsvJob2 {
     }
 
     @Bean
-    public FlatFileItemWriter csvJob2_fileWriter() {
+    public FlatFileItemWriter<TwoToken> csvJob2_fileWriter() {
         Resource resource = new FileSystemResource("output/csvJob2_output.csv");
 
         BeanWrapperFieldExtractor<TwoToken> fieldExtractor = new BeanWrapperFieldExtractor<>();
