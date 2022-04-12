@@ -42,7 +42,7 @@ public class CsvJob2 {
         return stepBuilderFactory.get("csvJob2_step01")
                 .chunk(CHUNK_SIZE)
                 .reader(csvJob2_fileReader())
-                .writer(csvJob2_fileWriter(new FileSystemResource("output/csvJob2_output.csv")))
+                .writer(csvJob2_fileWriter())
                 .build();
     }
 
@@ -51,7 +51,7 @@ public class CsvJob2 {
         FlatFileItemReader<TwoToken> itemReader = new FlatFileItemReader<>();
         itemReader.setName("csvJob2_fileReader");
         itemReader.setLinesToSkip(1);
-        itemReader.setResource(new ClassPathResource("sample/csvJob1_input.csv"));
+        itemReader.setResource(new ClassPathResource("sample/csvJob2_input.csv"));
 
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames("one", "two");
@@ -70,12 +70,14 @@ public class CsvJob2 {
     }
 
     @Bean
-    public FlatFileItemWriter csvJob2_fileWriter(Resource resource) {
+    public FlatFileItemWriter csvJob2_fileWriter() {
+        Resource resource = new FileSystemResource("output/csvJob2_output.csv");
+
         BeanWrapperFieldExtractor<TwoToken> fieldExtractor = new BeanWrapperFieldExtractor<>();
         fieldExtractor.setNames(new String[] {"one", "two"});
         fieldExtractor.afterPropertiesSet();
 
-        DelimitedLineAggregator<TwoToken> lineAggregator = new DelimitedLineAggregator();
+        DelimitedLineAggregator<TwoToken> lineAggregator = new DelimitedLineAggregator<>();
         lineAggregator.setDelimiter("@");
         lineAggregator.setFieldExtractor(fieldExtractor);
 
