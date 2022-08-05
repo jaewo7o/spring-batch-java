@@ -1,16 +1,12 @@
 package com.jaewoo.batch;
 
-import com.jaewoo.batch.app.domain.Dept;
-import com.jaewoo.batch.app.domain.DeptRepository;
+import com.jaewoo.batch.app.basic.domain.DeptRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.stream.IntStream;
 
 @Slf4j
 @AllArgsConstructor

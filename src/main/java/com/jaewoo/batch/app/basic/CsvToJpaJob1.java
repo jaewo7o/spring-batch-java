@@ -1,7 +1,7 @@
-package com.jaewoo.batch.app;
+package com.jaewoo.batch.app.basic;
 
-import com.jaewoo.batch.app.domain.Dept;
-import com.jaewoo.batch.app.dto.TwoToken;
+import com.jaewoo.batch.app.basic.domain.Dept;
+import com.jaewoo.batch.app.basic.dto.TwoToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;

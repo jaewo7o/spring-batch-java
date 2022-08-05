@@ -1,4 +1,4 @@
-package com.jaewoo.batch.app.domain;
+package com.jaewoo.batch.app.basic.domain;
 
 import org.springframework.data.repository.CrudRepository;
 

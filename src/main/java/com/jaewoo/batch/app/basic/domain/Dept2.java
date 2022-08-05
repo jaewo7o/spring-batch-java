@@ -1,4 +1,4 @@
-package com.jaewoo.batch.app.domain;
+package com.jaewoo.batch.app.basic.domain;
 
 import lombok.*;
 
@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @ToString
 @Entity
-public class Dept {
+public class Dept2 {
     @Id
     Integer deptId;
     String deptName;

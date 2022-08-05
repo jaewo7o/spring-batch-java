@@ -1,4 +1,4 @@
-package com.jaewoo.batch.step;
+package com.jaewoo.batch.app.step;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

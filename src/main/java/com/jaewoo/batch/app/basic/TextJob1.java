@@ -1,6 +1,6 @@
-package com.jaewoo.batch.app;
+package com.jaewoo.batch.app.basic;
 
-import com.jaewoo.batch.app.dto.OneLine;
+import com.jaewoo.batch.app.basic.dto.OneLine;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;

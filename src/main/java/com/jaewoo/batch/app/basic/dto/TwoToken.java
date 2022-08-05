@@ -1,4 +1,4 @@
-package com.jaewoo.batch.app.dto;
+package com.jaewoo.batch.app.basic.dto;
 
 import lombok.*;
 
