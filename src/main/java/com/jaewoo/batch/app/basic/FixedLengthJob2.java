@@ -12,7 +12,10 @@ import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.*;
+import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
+import org.springframework.batch.item.file.transform.FixedLengthTokenizer;
+import org.springframework.batch.item.file.transform.FormatterLineAggregator;
+import org.springframework.batch.item.file.transform.Range;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -23,10 +26,11 @@ import org.springframework.core.io.Resource;
 @RequiredArgsConstructor
 @Configuration
 public class FixedLengthJob2 {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
-
     private static final int CHUNK_SIZE = 5;
+
+    private final JobBuilderFactory jobBuilderFactory;
+
+    private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
     public Job fixedLengthJob2_buildBatch() {
@@ -48,7 +52,7 @@ public class FixedLengthJob2 {
         Resource resource = new FileSystemResource("output/fixedLengthJob2_output.txt");
 
         BeanWrapperFieldExtractor<TwoToken> fieldExtractor = new BeanWrapperFieldExtractor<>();
-        fieldExtractor.setNames(new String[] {"one", "two"});
+        fieldExtractor.setNames(new String[] { "one", "two" });
         fieldExtractor.afterPropertiesSet();
 
         FormatterLineAggregator<TwoToken> lineAggregator = new FormatterLineAggregator<>();

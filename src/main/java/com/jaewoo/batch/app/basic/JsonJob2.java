@@ -23,9 +23,11 @@ import org.springframework.core.io.FileSystemResource;
 @RequiredArgsConstructor
 @Configuration
 public class JsonJob2 {
+    private static final int CHUNK_SIZE = 5;
+
     private final JobBuilderFactory jobBuilderFactory;
+
     private final StepBuilderFactory stepBuilderFactory;
-    private final static int CHUNK_SIZE = 5;
 
     @Bean
     public Job jsonJob2_batchBuild() {
@@ -48,7 +50,8 @@ public class JsonJob2 {
         return item -> {
             if (item.getMarket().startsWith("KRW-")) {
                 return item;
-            } else {
+            }
+            else {
                 return null;
             }
         };

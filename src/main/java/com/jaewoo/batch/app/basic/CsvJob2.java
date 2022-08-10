@@ -25,10 +25,11 @@ import org.springframework.core.io.Resource;
 @Slf4j
 @Configuration
 public class CsvJob2 {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
+    private static final int CHUNK_SIZE = 5;
 
-    private final static int CHUNK_SIZE = 5;
+    private final JobBuilderFactory jobBuilderFactory;
+
+    private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
     public Job csvJob2_batchBuild() {
@@ -71,15 +72,16 @@ public class CsvJob2 {
 
     @Bean
     public FlatFileItemWriter<TwoToken> csvJob2_fileWriter() {
-        Resource resource = new FileSystemResource("output/csvJob2_output.csv");
 
         BeanWrapperFieldExtractor<TwoToken> fieldExtractor = new BeanWrapperFieldExtractor<>();
-        fieldExtractor.setNames(new String[] {"one", "two"});
+        fieldExtractor.setNames(new String[] { "one", "two" });
         fieldExtractor.afterPropertiesSet();
 
         DelimitedLineAggregator<TwoToken> lineAggregator = new DelimitedLineAggregator<>();
         lineAggregator.setDelimiter("@");
         lineAggregator.setFieldExtractor(fieldExtractor);
+
+        Resource resource = new FileSystemResource("output/csvJob2_output.csv");
 
         return new FlatFileItemWriterBuilder<TwoToken>()
                 .name("csvJob2_fileWriter")

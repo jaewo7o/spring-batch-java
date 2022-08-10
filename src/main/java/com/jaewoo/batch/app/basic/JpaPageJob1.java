@@ -19,11 +19,14 @@ import javax.persistence.EntityManagerFactory;
 @Slf4j
 @Configuration
 public class JpaPageJob1 {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
-    private final EntityManagerFactory entityManagerFactory;
 
-    private final static int CHUNK_SIZE = 10;
+    private static final int CHUNK_SIZE = 10;
+
+    private final JobBuilderFactory jobBuilderFactory;
+
+    private final StepBuilderFactory stepBuilderFactory;
+
+    private final EntityManagerFactory entityManagerFactory;
 
     @Bean
     public Job jpaPageJob1_buildBatch() {

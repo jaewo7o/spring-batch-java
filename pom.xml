@@ -15,6 +15,7 @@
     <description>Sample Project for Spring Boot Batch</description>
     <properties>
         <java.version>11</java.version>
+        <project.build.sourceDirectories>${basedir}/src</project.build.sourceDirectories>
     </properties>
     <dependencies>
         <dependency>
@@ -81,6 +82,25 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>10.3.1</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <consoleOutput>true</consoleOutput>
+                    <configLocation>${basedir}/google_checks.xml</configLocation>
+                    <sourceDirectories>${project.build.sourceDirectories}</sourceDirectories>
+                    <suppressionsLocation>${basedir}/checkstyle-suppressions.xml</suppressionsLocation>
                 </configuration>
             </plugin>
         </plugins>

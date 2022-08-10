@@ -16,10 +16,11 @@ import org.springframework.core.io.ClassPathResource;
 @AllArgsConstructor
 @Configuration
 public class TextJob1 {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
+    private static final int CHUNK_SIZE = 5;
 
-    private final static int CHUNK_SIZE = 5;
+    private final JobBuilderFactory jobBuilderFactory;
+
+    private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
     public Job textJob1_buildBatch() {

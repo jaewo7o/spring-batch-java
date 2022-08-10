@@ -2,6 +2,7 @@ package com.jaewoo.batch.app.basic;
 
 import com.jaewoo.batch.app.basic.domain.Dept;
 import com.jaewoo.batch.app.basic.domain.Dept2;
+import javax.persistence.EntityManagerFactory;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -16,17 +17,17 @@ import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilde
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.persistence.EntityManagerFactory;
-
 @AllArgsConstructor
 @Slf4j
 @Configuration
 public class JpaPageJob2 {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
-    private final EntityManagerFactory entityManagerFactory;
+    private static final int CHUNK_SIZE = 10;
 
-    private final static int CHUNK_SIZE = 10;
+    private final JobBuilderFactory jobBuilderFactory;
+
+    private final StepBuilderFactory stepBuilderFactory;
+
+    private final EntityManagerFactory entityManagerFactory;
 
     @Bean
     public Job jpaPageJob2_buildBatch() {
@@ -46,7 +47,8 @@ public class JpaPageJob2 {
     }
 
     private ItemProcessor<Dept, Dept2> jpaPageJob2_processor() {
-        return dept -> new Dept2(dept.getDeptId(), "NEW_" + dept.getDeptName(), "NEW_" + dept.getDeptLocation());
+        return dept -> new Dept2(dept.getDeptId(), "NEW_" + dept.getDeptName(),
+                "NEW_" + dept.getDeptLocation());
     }
 
     @Bean

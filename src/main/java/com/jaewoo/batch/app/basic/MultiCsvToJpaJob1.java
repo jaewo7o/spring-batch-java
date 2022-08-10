@@ -26,12 +26,15 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Configuration
 public class MultiCsvToJpaJob1 {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
-    private final EntityManagerFactory entityManagerFactory;
-    private final ResourceLoader resourceLoader;
+    private static final int CHUNK_SIZE = 5;
 
-    private final static int CHUNK_SIZE = 5;
+    private final JobBuilderFactory jobBuilderFactory;
+
+    private final StepBuilderFactory stepBuilderFactory;
+
+    private final EntityManagerFactory entityManagerFactory;
+
+    private final ResourceLoader resourceLoader;
 
     @Bean
     public Job multiCsvToJpaJob1_buildBatch() {
@@ -71,7 +74,8 @@ public class MultiCsvToJpaJob1 {
                     ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
                             .getResources("classpath:sample/multiCsvToJpaJob1/*.csv")
             );
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 

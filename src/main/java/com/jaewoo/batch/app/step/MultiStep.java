@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class MultiStep {
     private final JobBuilderFactory jobBuilderFactory;
+
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean

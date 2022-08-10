@@ -25,11 +25,13 @@ import javax.persistence.EntityManagerFactory;
 @RequiredArgsConstructor
 @Configuration
 public class CsvToJpaJob1 {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
-    private final EntityManagerFactory entityManagerFactory;
+    private static final int CHUNK_SIZE = 5;
 
-    private final static int CHUNK_SIZE = 5;
+    private final JobBuilderFactory jobBuilderFactory;
+
+    private final StepBuilderFactory stepBuilderFactory;
+
+    private final EntityManagerFactory entityManagerFactory;
 
     @Bean
     public Job csvToJpaJob1_buildBatch() {

@@ -21,6 +21,7 @@ import org.springframework.core.io.ClassPathResource;
 @Configuration
 public class FixedLengthJob1 {
     private final JobBuilderFactory jobBuilderFactory;
+
     private final StepBuilderFactory stepBuilderFactory;
 
     private static final int CHUNK_SIZE = 5;

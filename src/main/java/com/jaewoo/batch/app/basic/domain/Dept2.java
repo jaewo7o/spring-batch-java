@@ -14,6 +14,8 @@ import javax.persistence.Id;
 public class Dept2 {
     @Id
     Integer deptId;
+
     String deptName;
+
     String deptLocation;
 }

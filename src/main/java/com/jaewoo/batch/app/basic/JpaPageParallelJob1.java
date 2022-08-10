@@ -2,6 +2,7 @@ package com.jaewoo.batch.app.basic;
 
 import com.jaewoo.batch.app.basic.domain.Dept;
 import com.jaewoo.batch.app.basic.domain.Dept2;
+import javax.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -18,17 +19,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
-import javax.persistence.EntityManagerFactory;
-
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class JpaPageParallelJob1 {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
-    private final EntityManagerFactory entityManagerFactory;
-
     private static final int CHUNK_SIZE = 10;
+
+    private final JobBuilderFactory jobBuilderFactory;
+
+    private final StepBuilderFactory stepBuilderFactory;
+
+    private final EntityManagerFactory entityManagerFactory;
 
     @Bean
     public Job jpaPageParallelJob1_batchBuild() {
@@ -72,7 +73,8 @@ public class JpaPageParallelJob1 {
     }
 
     private ItemProcessor<Dept, Dept2> jpaPageParallelJob1_step1_processor() {
-        return dept -> new Dept2(dept.getDeptId(), "NEW_" + dept.getDeptName(), "NEW_" + dept.getDeptLocation());
+        return dept -> new Dept2(dept.getDeptId(), "NEW_" + dept.getDeptName(),
+                "NEW_" + dept.getDeptLocation());
     }
 
     @Bean
@@ -103,7 +105,8 @@ public class JpaPageParallelJob1 {
     }
 
     private ItemProcessor<Dept, Dept2> jpaPageParallelJob1_step2_processor() {
-        return dept -> new Dept2(dept.getDeptId(), "NEW_" + dept.getDeptName(), "NEW_" + dept.getDeptLocation());
+        return dept -> new Dept2(dept.getDeptId(), "NEW_" + dept.getDeptName(),
+                "NEW_" + dept.getDeptLocation());
     }
 
     @Bean

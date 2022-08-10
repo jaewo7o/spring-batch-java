@@ -19,10 +19,11 @@ import org.springframework.core.io.ClassPathResource;
 @Slf4j
 @Configuration
 public class CsvJob1 {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
+    private static final int CHUNK_SIZE = 5;
 
-    private final static int CHUNK_SIZE = 5;
+    private final JobBuilderFactory jobBuilderFactory;
+
+    private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
     public Job csvJob1_batchBuild() {

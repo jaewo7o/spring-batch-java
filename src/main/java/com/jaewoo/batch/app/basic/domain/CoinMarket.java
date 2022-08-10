@@ -1,6 +1,10 @@
 package com.jaewoo.batch.app.basic.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
@@ -9,6 +13,8 @@ import lombok.*;
 @ToString
 public class CoinMarket {
     private String market;
-    private String korean_name;
-    private String english_name;
+
+    private String koreanName;
+
+    private String englishName;
 }

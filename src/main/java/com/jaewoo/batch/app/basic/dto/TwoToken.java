@@ -9,5 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 public class TwoToken {
     private String one;
+
     private String two;
 }
