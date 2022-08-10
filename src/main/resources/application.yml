@@ -6,6 +6,7 @@ logging:
 spring:
     batch:
         job:
+            enabled: true
             names: ${job.name:NONE}
     output:
         ansi:
