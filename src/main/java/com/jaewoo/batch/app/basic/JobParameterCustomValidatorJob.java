@@ -52,9 +52,9 @@ public class JobParameterCustomValidatorJob {
 
             if (!StringUtils.hasText(fileName)) {
                 throw new JobParametersInvalidException("fileName parameter is missing.");
-            }
-            else if (!StringUtils.endsWithIgnoreCase(fileName, "csv")) {
-                throw new JobParametersInvalidException("fileName parameter does not use the csv file extension.");
+            } else if (!StringUtils.endsWithIgnoreCase(fileName, "csv")) {
+                throw new JobParametersInvalidException(
+                        "fileName parameter does not use the csv file extension.");
             }
         }
     }

@@ -102,6 +102,7 @@
                     <sourceDirectories>${project.build.sourceDirectories}</sourceDirectories>
                     <suppressionsLocation>${basedir}/checkstyle-suppressions.xml</suppressionsLocation>
                 </configuration>
+                
             </plugin>
         </plugins>
     </build>

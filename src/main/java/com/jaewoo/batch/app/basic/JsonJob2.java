@@ -50,8 +50,7 @@ public class JsonJob2 {
         return item -> {
             if (item.getMarket().startsWith("KRW-")) {
                 return item;
-            }
-            else {
+            } else {
                 return null;
             }
         };

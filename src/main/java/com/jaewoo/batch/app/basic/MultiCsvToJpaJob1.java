@@ -74,8 +74,7 @@ public class MultiCsvToJpaJob1 {
                     ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
                             .getResources("classpath:sample/multiCsvToJpaJob1/*.csv")
             );
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

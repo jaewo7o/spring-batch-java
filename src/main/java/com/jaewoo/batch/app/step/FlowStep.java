@@ -61,11 +61,9 @@ public class FlowStep {
                     //Flow에서 on은 RepeatStatus가 아닌 ExitStatus를 바라본다.
                     if (result.equals("COMPLETED")) {
                         contribution.setExitStatus(ExitStatus.COMPLETED);
-                    }
-                    else if (result.equals("FAIL")) {
+                    } else if (result.equals("FAIL")) {
                         contribution.setExitStatus(ExitStatus.FAILED);
-                    }
-                    else if (result.equals("UNKNOWN")) {
+                    } else if (result.equals("UNKNOWN")) {
                         contribution.setExitStatus(ExitStatus.UNKNOWN);
                     }
 

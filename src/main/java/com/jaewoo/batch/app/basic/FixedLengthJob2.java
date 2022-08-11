@@ -49,16 +49,16 @@ public class FixedLengthJob2 {
     }
 
     private FlatFileItemWriter<TwoToken> fixedLengthJob2_fileWriter() {
-        Resource resource = new FileSystemResource("output/fixedLengthJob2_output.txt");
 
         BeanWrapperFieldExtractor<TwoToken> fieldExtractor = new BeanWrapperFieldExtractor<>();
-        fieldExtractor.setNames(new String[] { "one", "two" });
+        fieldExtractor.setNames(new String[]{"one", "two"});
         fieldExtractor.afterPropertiesSet();
 
         FormatterLineAggregator<TwoToken> lineAggregator = new FormatterLineAggregator<>();
         lineAggregator.setFormat("%-5s###%5s");
         lineAggregator.setFieldExtractor(fieldExtractor);
 
+        Resource resource = new FileSystemResource("output/fixedLengthJob2_output.txt");
         return new FlatFileItemWriterBuilder<TwoToken>()
                 .name("fixedLengthJob2_fileWriter")
                 .resource(resource)
