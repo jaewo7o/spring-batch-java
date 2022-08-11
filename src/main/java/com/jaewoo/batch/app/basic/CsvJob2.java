@@ -25,30 +25,32 @@ import org.springframework.core.io.Resource;
 @Slf4j
 @Configuration
 public class CsvJob2 {
+    private static final String BATCH_JOB = "csvJob2";
+
     private static final int CHUNK_SIZE = 5;
 
     private final JobBuilderFactory jobBuilderFactory;
 
     private final StepBuilderFactory stepBuilderFactory;
 
-    @Bean
-    public Job csvJob2_batchBuild() {
-        return jobBuilderFactory.get("csvJob2")
-                .start(csvJob2_step01())
+    @Bean(BATCH_JOB)
+    public Job csvJob2Build() {
+        return jobBuilderFactory.get(BATCH_JOB)
+                .start(csvJob2Step01())
                 .build();
     }
 
-    @Bean
-    public Step csvJob2_step01() {
-        return stepBuilderFactory.get("csvJob2_step01")
+    @Bean(BATCH_JOB + "Step01")
+    public Step csvJob2Step01() {
+        return stepBuilderFactory.get(BATCH_JOB + "Step01")
                 .<TwoToken, TwoToken>chunk(CHUNK_SIZE)
-                .reader(csvJob2_fileReader())
-                .writer(csvJob2_fileWriter())
+                .reader(csvJob2FileReader())
+                .writer(csvJob2FileWriter())
                 .build();
     }
 
     @Bean
-    public FlatFileItemReader<TwoToken> csvJob2_fileReader() {
+    public FlatFileItemReader<TwoToken> csvJob2FileReader() {
         FlatFileItemReader<TwoToken> itemReader = new FlatFileItemReader<>();
         itemReader.setName("csvJob2_fileReader");
         itemReader.setLinesToSkip(1);
@@ -71,10 +73,10 @@ public class CsvJob2 {
     }
 
     @Bean
-    public FlatFileItemWriter<TwoToken> csvJob2_fileWriter() {
+    public FlatFileItemWriter<TwoToken> csvJob2FileWriter() {
 
         BeanWrapperFieldExtractor<TwoToken> fieldExtractor = new BeanWrapperFieldExtractor<>();
-        fieldExtractor.setNames(new String[] { "one", "two" });
+        fieldExtractor.setNames(new String[]{"one", "two"});
         fieldExtractor.afterPropertiesSet();
 
         DelimitedLineAggregator<TwoToken> lineAggregator = new DelimitedLineAggregator<>();

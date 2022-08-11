@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 @Slf4j
 public class FlowStep {
+
     private final JobBuilderFactory jobBuilderFactory;
 
     private final StepBuilderFactory stepBuilderFactory;
@@ -23,48 +24,31 @@ public class FlowStep {
     public Job flowStepJob() {
 
         return jobBuilderFactory.get("flowStepJob")
-                .start(flowStepStartStep())
-                .on("FAILED") //startStep의 ExitStatus가 FAILED일 경우
-                .to(flowStepFailOverStep()) //failOver Step을 실행 시킨다.
-                .on("*") //failOver Step의 결과와 상관없이
-                .to(flowStepWriteStep()) //write Step을 실행 시킨다.
-                .on("*") //write Step의 결과와 상관없 이
-                .end() //Flow를 종료시킨다.
+                .start(stepA())
+                .on("*")
+                .to(stepB())
 
-                .from(flowStepStartStep()) //startStep이 FAILED가 아니고
-                .on("COMPLETED") //COMPLETED일 경우
-                .to(flowStepProcessStep()) //process Step을 실행 시킨다
-                .on("*") //process Step의 결과와 상관없이
-                .to(flowStepWriteStep()) // write Step을 실행 시킨다.
-                .on("*") //wrtie Step의 결과와 상관없이
-                .end() //Flow를 종료 시킨다.
-
-                .from(flowStepStartStep()) //startStep의 결과가 FAILED, COMPLETED가 아닌
-                .on("*") //모든 경우
-                .to(flowStepWriteStep()) //write Step을 실행시킨다.
-                .on("*") //write Step의 결과와 상관없이
-                .end() //Flow를 종료시킨다.
+                .from(stepA())
+                .on("FAILED")
+                .to(stepC())
                 .end()
                 .build();
     }
 
     @Bean
-    public Step flowStepStartStep() {
-        return stepBuilderFactory.get("flowStepStartStep")
+    public Step stepA() {
+        return stepBuilderFactory.get("stepA")
                 .tasklet((contribution, chunkContext) -> {
-                    log.info("Start Step!");
+                    log.info("Start Step A!");
 
-                    String result = "COMPLETED";
-                    //String result = "FAIL";
-                    //String result = "UNKNOWN";
+                    //String result = "COMPLETED";
+                    String result = "FAIL";
 
                     //Flow에서 on은 RepeatStatus가 아닌 ExitStatus를 바라본다.
                     if (result.equals("COMPLETED")) {
                         contribution.setExitStatus(ExitStatus.COMPLETED);
                     } else if (result.equals("FAIL")) {
                         contribution.setExitStatus(ExitStatus.FAILED);
-                    } else if (result.equals("UNKNOWN")) {
-                        contribution.setExitStatus(ExitStatus.UNKNOWN);
                     }
 
                     return RepeatStatus.FINISHED;
@@ -73,30 +57,20 @@ public class FlowStep {
     }
 
     @Bean
-    public Step flowStepFailOverStep() {
-        return stepBuilderFactory.get("flowStepFailOverStep")
+    public Step stepB() {
+        return stepBuilderFactory.get("stepB")
                 .tasklet((contribution, chunkContext) -> {
-                    log.info("FailOver Step!");
+                    log.info("StepB Execute!!");
                     return RepeatStatus.FINISHED;
                 })
                 .build();
     }
 
     @Bean
-    public Step flowStepProcessStep() {
-        return stepBuilderFactory.get("flowStepProcessStep")
+    public Step stepC() {
+        return stepBuilderFactory.get("stepC")
                 .tasklet((contribution, chunkContext) -> {
-                    log.info("Process Step!");
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
-
-    @Bean
-    public Step flowStepWriteStep() {
-        return stepBuilderFactory.get("flowStepWriteStep")
-                .tasklet((contribution, chunkContext) -> {
-                    log.info("Write Step!");
+                    log.info("StepC Execute!!");
                     return RepeatStatus.FINISHED;
                 })
                 .build();

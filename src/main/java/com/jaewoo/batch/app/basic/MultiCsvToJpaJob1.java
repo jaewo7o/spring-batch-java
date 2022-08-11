@@ -16,7 +16,9 @@ import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternUtils;
 
 import javax.persistence.EntityManagerFactory;
@@ -37,14 +39,14 @@ public class MultiCsvToJpaJob1 {
     private final ResourceLoader resourceLoader;
 
     @Bean
-    public Job multiCsvToJpaJob1_buildBatch() {
+    public Job multiCsvToJpaJob1_buildBatch() throws IOException {
         return jobBuilderFactory.get("multiCsvToJpaJob1")
                 .start(multiCsvToJpaJob1_step01())
                 .build();
     }
 
     @Bean
-    public Step multiCsvToJpaJob1_step01() {
+    public Step multiCsvToJpaJob1_step01() throws IOException {
         return stepBuilderFactory.get("multiCsvToJpaJob1_step01")
                 .<TwoToken, Dept>chunk(CHUNK_SIZE)
                 .reader(multiCsvToJpaJob1_readCsvMain())
@@ -66,17 +68,12 @@ public class MultiCsvToJpaJob1 {
         return item -> new Dept(Integer.parseInt(item.getOne()), item.getTwo(), "ETC");
     }
 
-    private MultiResourceItemReader<TwoToken> multiCsvToJpaJob1_readCsvMain() {
+    private MultiResourceItemReader<TwoToken> multiCsvToJpaJob1_readCsvMain() throws IOException {
         MultiResourceItemReader<TwoToken> itemReader = new MultiResourceItemReader<>();
 
-        try {
-            itemReader.setResources(
-                    ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
-                            .getResources("classpath:sample/multiCsvToJpaJob1/*.csv")
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ResourcePatternResolver resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
+        Resource[] resources = resourcePatternResolver.getResources("classpath:sample/multiCsvToJpaJob1/*.csv");
+        itemReader.setResources(resources);
 
         itemReader.setDelegate(multiCsvToJpaJob1_readCsv());
 

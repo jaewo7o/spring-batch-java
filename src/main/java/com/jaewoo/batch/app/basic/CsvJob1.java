@@ -19,34 +19,36 @@ import org.springframework.core.io.ClassPathResource;
 @Slf4j
 @Configuration
 public class CsvJob1 {
+    private static final String BATCH_JOB = "csvJob1";
+
     private static final int CHUNK_SIZE = 5;
 
     private final JobBuilderFactory jobBuilderFactory;
 
     private final StepBuilderFactory stepBuilderFactory;
 
-    @Bean
+    @Bean(BATCH_JOB)
     public Job csvJob1_batchBuild() {
-        return jobBuilderFactory.get("csvJob1")
-                .start(csvJob1_step01())
+        return jobBuilderFactory.get(BATCH_JOB)
+                .start(csvJob1Step01())
                 .build();
     }
 
-    @Bean
-    public Step csvJob1_step01() {
-        return stepBuilderFactory.get("csvJob1_step01")
+    @Bean(BATCH_JOB + "Step01")
+    public Step csvJob1Step01() {
+        return stepBuilderFactory.get(BATCH_JOB + "Step01")
                 .chunk(CHUNK_SIZE)
-                .reader(csvJob1_fileReader())
+                .reader(csvJob1FileReader())
                 .writer(items -> items.forEach(System.out::println))
                 .build();
     }
 
     @Bean
-    public FlatFileItemReader<TwoToken> csvJob1_fileReader() {
+    public FlatFileItemReader<TwoToken> csvJob1FileReader() {
         FlatFileItemReader<TwoToken> itemReader = new FlatFileItemReader<>();
         itemReader.setName("csvJob1_fileReader");
-        itemReader.setLinesToSkip(1);
         itemReader.setResource(new ClassPathResource("sample/csvJob1_input.csv"));
+        itemReader.setLinesToSkip(1);
 
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames("one", "two");
