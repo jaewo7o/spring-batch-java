@@ -11,19 +11,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBatchTest
-@SpringBootTest(classes = { JobParameterCustomValidatorJob.class, BatchTestConfig.class })
+@SpringBootTest(classes = {JobParameterCustomValidatorJob.class, BatchTestConfig.class})
 class JobParameterCustomValidatorJobTest {
 
     @Autowired
     protected JobLauncherTestUtils jobLauncherTestUtils;
 
+    protected JobParametersBuilder getUniqueJobParametersBuilder() {
+        return new JobParametersBuilder(jobLauncherTestUtils.getUniqueJobParameters());
+    }
+
     @Test
     @DisplayName("Custom Validator Test - Success")
     void jobParameterJobBuilder() throws Exception {
         // given
-        JobParameters params = new JobParametersBuilder()
+        JobParameters params = getUniqueJobParametersBuilder()
                 .addString("fileName", "uploadFile.csv")
-                .addString("id", "1")
                 .toJobParameters();
 
         // when
@@ -37,9 +40,8 @@ class JobParameterCustomValidatorJobTest {
     @DisplayName("Custom Validator Test - Fail")
     void jobParameterJobBuilderFail() throws Exception {
         // given
-        JobParameters params = new JobParametersBuilder()
+        JobParameters params = getUniqueJobParametersBuilder()
                 .addString("fileName", "uploadFile.txt")
-                .addString("id", "2")
                 .toJobParameters();
 
         // when & then

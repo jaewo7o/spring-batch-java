@@ -1,5 +1,6 @@
 package com.jaewoo.batch.app.basic;
 
+import com.jaewoo.batch.core.util.DataShare;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -40,8 +41,8 @@ public class JobParameterJob {
     public JobParametersValidator validator() {
         DefaultJobParametersValidator validator = new DefaultJobParametersValidator();
 
-        validator.setRequiredKeys(new String[] { "name" });
-        validator.setOptionalKeys(new String[] { "orderDate", "amount" });
+        validator.setRequiredKeys(new String[]{"name"});
+        //validator.setOptionalKeys(new String[]{"orderDate", "amount"});
 
         return validator;
     }
@@ -49,9 +50,10 @@ public class JobParameterJob {
     @JobScope
     @Bean(BATCH_NAME + "Step01")
     public Step jobParameterJobStep01(@Value("#{jobParameters[orderDate]}") Date orderDate,
-            @Value("#{jobParameters[amount]}") Double amount,
-            @Value("#{jobParameters[name]}") String name) {
+                                      @Value("#{jobParameters[amount]}") Double amount,
+                                      @Value("#{jobParameters[name]}") String name) {
         log.info("orderDate : {}, amount : {}, name : {} ", orderDate, amount, name);
+        log.info("jobName : {}", DataShare.getParameter("jobName"));
         return stepBuilderFactory.get(BATCH_NAME + "Step01")
                 .tasklet((contribution, context) -> {
                     log.info("name : {}", name);

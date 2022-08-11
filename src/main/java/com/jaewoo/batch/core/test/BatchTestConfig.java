@@ -8,4 +8,5 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration
 @EnableBatchProcessing
 public class BatchTestConfig {
+    
 }
