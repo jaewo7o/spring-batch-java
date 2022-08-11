@@ -7,9 +7,9 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
@@ -19,13 +19,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 
 @RequiredArgsConstructor
 @Slf4j
 @Configuration
 public class CsvJob2 {
-    private static final String BATCH_JOB = "csvJob2";
+    private static final String BATCH_JOB = "csvJob2Job";
 
     private static final int CHUNK_SIZE = 5;
 
@@ -36,6 +35,7 @@ public class CsvJob2 {
     @Bean(BATCH_JOB)
     public Job csvJob2Build() {
         return jobBuilderFactory.get(BATCH_JOB)
+                .incrementer(new RunIdIncrementer())
                 .start(csvJob2Step01())
                 .build();
     }
@@ -74,21 +74,22 @@ public class CsvJob2 {
 
     @Bean
     public FlatFileItemWriter<TwoToken> csvJob2FileWriter() {
+        FlatFileItemWriter itemWriter = new FlatFileItemWriter();
+        itemWriter.setName("csvJob2_fileWriter");
+        itemWriter.setResource(new FileSystemResource("output/csvJob2_output.csv"));
 
         BeanWrapperFieldExtractor<TwoToken> fieldExtractor = new BeanWrapperFieldExtractor<>();
         fieldExtractor.setNames(new String[]{"one", "two"});
         fieldExtractor.afterPropertiesSet();
 
         DelimitedLineAggregator<TwoToken> lineAggregator = new DelimitedLineAggregator<>();
-        lineAggregator.setDelimiter("@");
+        lineAggregator.setDelimiter(",");
         lineAggregator.setFieldExtractor(fieldExtractor);
 
-        Resource resource = new FileSystemResource("output/csvJob2_output.csv");
+        itemWriter.setLineAggregator(lineAggregator);
+        itemWriter.setAppendAllowed(false);
+        itemWriter.setHeaderCallback(writer -> writer.write("첫번째,두번째"));
 
-        return new FlatFileItemWriterBuilder<TwoToken>()
-                .name("csvJob2_fileWriter")
-                .resource(resource)
-                .lineAggregator(lineAggregator)
-                .build();
+        return itemWriter;
     }
 }
