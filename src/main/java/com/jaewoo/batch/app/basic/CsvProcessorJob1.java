@@ -26,11 +26,8 @@ import org.springframework.core.io.FileSystemResource;
 @Configuration
 public class CsvProcessorJob1 {
     private static final String BATCH_JOB = "csvProcessorJob1Job";
-
     private static final int CHUNK_SIZE = 5;
-
     private final JobBuilderFactory jobBuilderFactory;
-
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean(BATCH_JOB)
@@ -94,7 +91,7 @@ public class CsvProcessorJob1 {
         itemWriter.setResource(new FileSystemResource("output/csvProcessorJob1_output.csv"));
 
         BeanWrapperFieldExtractor<TwoToken> fieldExtractor = new BeanWrapperFieldExtractor<>();
-        fieldExtractor.setNames(new String[]{"one", "two"});
+        fieldExtractor.setNames(new String[] {"one", "two"});
         fieldExtractor.afterPropertiesSet();
 
         DelimitedLineAggregator<TwoToken> lineAggregator = new DelimitedLineAggregator<>();
